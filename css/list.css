@@ -1,0 +1,93 @@
+
+/* 기록 화면 셸 — Figma 프레임과 똑같이 817px 에서 잘린다. */
+.screen--list {
+  height: var(--screen-h);
+}
+
+/* 상태바는 스크롤된 타임라인을 가리는 흰 띠다 (Figma "image 1009"). */
+.screen--list .statusbar {
+  background: var(--white);
+}
+
+/* --------------------------------------------------------------------------
+   월 전환 바 — Figma 872:2921 (375 x 52)
+   -------------------------------------------------------------------------- */
+
+.recordhead {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  background: var(--white);
+}
+
+.recordhead__month {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-black);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   날짜 스트립 영역 — Figma 872:3051 (375 x 90), 안쪽 뷰포트 342 x 58
+   -------------------------------------------------------------------------- */
+
+.recorddates {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  height: 90px;
+  background: var(--white);
+}
+
+.recorddates__viewport {
+  display: flex;
+  align-items: center;
+  width: 342px;
+  height: 58px;
+  margin: 0 17px;
+  overflow: hidden;
+}
+
+.recorddates .datestrip {
+  padding: 0;
+  margin-left: var(--strip-scroll, 0px);
+}
+
+/* Figma 가 잡아 둔 가로 스크롤 위치 (칩 40px + 간격 9px = pitch 49px) */
+.recorddates--at-6 { --strip-scroll: -241px; } /* 6일이 왼쪽 첫 칩 */
+.recorddates--at-2 { --strip-scroll: -70px; }  /* 2일이 반쯤 걸친 위치 */
+
+/* --------------------------------------------------------------------------
+   기록 타임라인 — Figma 873:3493 / 873:3763 (301 x 770)
+   공용 .timeline 을 그대로 쓰고, 이 플로우의 간격만 다시 잡는다.
+   -------------------------------------------------------------------------- */
+
+.timeline--records {
+  z-index: 0;
+  padding-top: 4px;
+}
+
+/* Figma 848:1862 "Line 1" 은 primary-blue 1px (홈의 회색 레일과 다르다) */
+.timeline--records::before {
+  top: 9px;
+  bottom: 20px;
+  background: var(--primary-blue);
+}
+
+.timeline--records .timeline__group + .timeline__group { margin-top: 16px; }
+.timeline--records .timeline__time { margin-top: 4px; }
+.timeline--records .timeline__card { margin-top: 16px; }
+.timeline--records .timeline__card + .timeline__card { margin-top: 10px; }
+
+/* list-1-1 — 타임라인이 위로 181px 밀려 헤더 뒤로 들어간 상태
+   (Figma 873:3763 의 top = 6.78px) */
+.timeline--scrolled {
+  margin-top: -175px;
+}
