@@ -88,18 +88,21 @@ const wdOf = (d, m = 9) => WD[new Date(2026, m, d).getDay()];
    Frame (desktop) / Mobile
 --------------------------------------------------------- */
 let SCALE = 1;
+// 앱은 항상 375 × 812(iPhone X) 캔버스. 화면 크기에 맞춰 비율을 유지한 채 확대/축소한다.
 function fit() {
-  const framed = window.innerWidth > 520;
+  const vv = window.visualViewport;
+  const vw = vv ? vv.width : window.innerWidth;
+  const vh = vv ? vv.height : window.innerHeight;
+  const framed = vw > 520;
   document.body.classList.toggle('framed', framed);
-  if (framed) {
-    SCALE = Math.min(1, (window.innerHeight - 56) / 812, (window.innerWidth - 56) / 375);
-    app.style.transform = `scale(${SCALE})`;
-  } else {
-    SCALE = 1;
-    app.style.transform = '';
-  }
+  SCALE = framed
+    ? Math.min(1.5, (vh - 64) / 812, (vw - 64) / 375)
+    : Math.min(vw / 375, vh / 812);
+  app.style.setProperty('--scale', SCALE);
 }
 window.addEventListener('resize', fit);
+window.addEventListener('orientationchange', () => setTimeout(fit, 250));
+window.visualViewport && window.visualViewport.addEventListener('resize', fit);
 fit();
 
 /* ---------------------------------------------------------

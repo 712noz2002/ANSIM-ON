@@ -36,17 +36,18 @@ html, body {
 }
 body { position: fixed; inset: 0; }
 
-body.framed {
-  background: #E6E9F1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+body { background: #F5F6FA; }
+body.framed { background: #E6E9F1; }
 
+/* 앱 캔버스: 항상 iPhone X 375 × 812 비율 고정 → 화면에 맞춰 scale */
 .app {
-  width: 100%;
-  height: 100dvh;
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 375px;
+  height: 812px;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  transform-origin: center center;
   overflow: hidden;
   background: var(--background);
   color: var(--text-primary);
@@ -58,15 +59,13 @@ body.framed {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   touch-action: manipulation;
+  /* iPhone X safe area를 캔버스 안에서 재현 */
+  --sat: 44px;
+  --sab: 34px;
 }
 body.framed .app {
-  width: 375px;
-  height: 812px;
-  flex: none;
   border-radius: 46px;
   box-shadow: 0 0 0 10px #15161A, 0 0 0 11.5px #3A3C44, 0 40px 90px rgba(20, 30, 70, .28);
-  --sat: 44px;
-  --sab: 20px;
 }
 
 button { font: inherit; color: inherit; border: 0; background: none; padding: 0; margin: 0; cursor: pointer; text-align: inherit; letter-spacing: inherit; }
@@ -95,6 +94,7 @@ body.framed .statusbar { display: flex; }
 .sb-icons { display: flex; align-items: center; gap: 5px; }
 .home-ind { display: none; position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: #101116; z-index: 95; pointer-events: none; }
 body.framed .home-ind { display: block; }
+.home-ind { bottom: 8px; }
 
 /* ---------- 화면 & 전환 ---------- */
 .screens { position: absolute; inset: 0; }
@@ -302,7 +302,7 @@ body.framed .home-ind { display: block; }
 @keyframes shake { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
 .strip-arrow { position: absolute; top: 22px; width: 44px; height: 44px; display: grid; place-items: center; color: rgba(255, 255, 255, .88); }
 .strip-arrow.l { left: 6px; } .strip-arrow.r { right: 6px; }
-.strip-arrow:disabled { opacity: .32; }
+.strip-arrow:disabled { opacity: .32; pointer-events: none; }
 
 .rec-sheet {
   position: absolute; left: 0; right: 0; top: calc(var(--sat) + 60px); bottom: 0;
